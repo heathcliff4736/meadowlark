@@ -1,8 +1,11 @@
 const express = require('express')
 const expressHandlebars = require('express-handlebars') // View (frontend)
 // 사용자 정의 라이브러리
-const fortune = require('./lib/fortune.js')
+// const fortune = require('./lib/fortune.js')
 const app = express()
+const fortune = require("./lib/fortune");
+const handlers = require('./lib/handlers');
+const weatherMiddleware = require('./lib/middleware/weather');
 const port = process.env.PORT || 3000
 
 // 뷰 핸들바 엔진 설정
@@ -21,6 +24,8 @@ app.engine('.hbs', expressHandlebars({
 app.set('view engine', '.hbs')
 
 app.use(express.static(__dirname + '/public'))
+
+app.use(weatherMiddleware)
 
 app.get('/', handlers.home)
 
